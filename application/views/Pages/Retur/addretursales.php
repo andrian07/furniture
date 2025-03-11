@@ -102,7 +102,7 @@ require DOC_ROOT_PATH . $this->config->item('header');
           </div>
 
           <div class="col-md-5">
-            
+
           </div>
           <div class="col-sm-3">
             <div class="form-group">
@@ -274,26 +274,38 @@ require DOC_ROOT_PATH . $this->config->item('footer');
       var temp_price_temp          = temp_price.get();
       var qty_temp                 = $("#temp_qty").val();
       var temp_qty_retur           = $("#temp_qty_retur").val();
-      $.ajax({
-        type: "POST",
-        url: "<?php echo base_url(); ?>Retur/insert_temp_retur_sales",
-        dataType: "json",
-        data: {customer_id:customer_id, retur_sales_inv:retur_sales_inv, sales_no:sales_no, item_id_temp:item_id_temp, temp_price_temp:temp_price_temp, qty_temp:qty_temp, temp_qty_retur:temp_qty_retur},
-        success : function(data){
-          if (data.code == "200"){
-            get_temp();
-            get_total_footer();
-            clear_input();
-            Swal.fire('Saved!', '', 'success'); 
-          } else {
-            Swal.fire({
+
+      if(temp_qty_retur < 1){
+        Swal.fire({
               icon: 'error',
               title: 'Oops...',
-              text: data.result,
+              text: 'Qty Retur Harus Di Isi',
             })
+      }else{
+        $.ajax({
+          type: "POST",
+          url: "<?php echo base_url(); ?>Retur/insert_temp_retur_sales",
+          dataType: "json",
+          data: {customer_id:customer_id, retur_sales_inv:retur_sales_inv, sales_no:sales_no, item_id_temp:item_id_temp, temp_price_temp:temp_price_temp, qty_temp:qty_temp, temp_qty_retur:temp_qty_retur},
+          success : function(data){
+            if (data.code == "200"){
+              get_temp();
+              get_total_footer();
+              clear_input();
+              Swal.fire('Saved!', '', 'success'); 
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: data.result,
+              })
+            }
           }
-        }
-      });
+        });
+      }
+
+
+
     });
   });
 
@@ -373,6 +385,7 @@ require DOC_ROOT_PATH . $this->config->item('footer');
       $('#sales_no').val(ui.item.id);
     },
   });
+
 
   $('#product_name').autocomplete({ 
     minLength: 2,

@@ -95,7 +95,7 @@ class Retur extends CI_Controller {
 					$find_result[] = [
 						'id'                  => $row->item_id,
 						'value'               => $diplay_text,
-						'purchase_price'      => $row->dt_purchase_price,
+						'purchase_price'      => $row->dt_purchase_total,
 						'purchase_qty'		  => $row->dt_purchase_qty
 					];
 				}
@@ -363,6 +363,7 @@ class Retur extends CI_Controller {
 		echo json_encode($result);
 	}
 
+
 	public function search_product_sales_no()
 	{
 		$sales_no = $this->input->get('sales_no');
@@ -379,8 +380,8 @@ class Retur extends CI_Controller {
 					$find_result[] = [
 						'id'                  => $row->item_id,
 						'value'               => $diplay_text,
-						'sales_price'      => $row->dt_sales_price,
-						'sales_qty'		  => $row->dt_sales_qty
+						'sales_price'      	  => $row->dt_sales_total,
+						'sales_qty'		      => $row->dt_sales_qty
 					];
 				}
 				$result = ['success' => TRUE, 'num_product' => count($find_result), 'data' => $find_result, 'message' => ''];
@@ -407,6 +408,8 @@ class Retur extends CI_Controller {
 			$msg = "Tidak Bisa Retur Melebihi Trx";
 			echo json_encode(['code'=>0, 'result'=>$msg]);die();
 		}
+
+		$check_retur_item = $this->retur_model->check_retur_item($item_id_temp, $retur_sales_inv);
 
 		$check_input_temp = $this->retur_model->get_edit_retur_sales_temp($item_id_temp, $user_id);
 
