@@ -211,7 +211,7 @@
                         <div class="col-md-6">
                             <table width="100%" style="height:160px;">
                                 <tr>
-                                    <td style="text-align:center;">Sales, </td>
+                                    <td style="text-align:center;">Kasir, </td>
                                     <td style="text-align:center;">Supir, </td>
                                     <td style="text-align:center;">Penerima, </td>
                                 </tr>

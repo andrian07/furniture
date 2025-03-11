@@ -602,6 +602,26 @@ require DOC_ROOT_PATH . $this->config->item('footer');
   });
   }
 
+  $('#customer_id').on('input', function(event) {
+    var id = this.value;
+    $.ajax({
+      url: '<?php echo base_url(); ?>/Sales/get_customer_info',
+      dataType: 'json',
+      type: 'POST',
+      data: {id:id},
+      success: function(res) {
+        if(res.code == 200) {
+          var customer_phone = res.data[0].customer_phone;
+          console.log(customer_phone);
+          var customer_address = res.data[0].customer_address;
+           $('#no_hp').val(customer_phone);
+           $('#address').val(customer_address);
+        }else{
+          $('#customer_id').val('');
+        }
+      },
+    });
+  });
 
   $('#product_name').autocomplete({ 
     minLength: 2,
@@ -614,6 +634,7 @@ require DOC_ROOT_PATH . $this->config->item('footer');
         success: function(res) {
           if (res.success == true) {
             add(res.data);
+            //no_hp
           }else{
             $('#product_name').val('');
           }

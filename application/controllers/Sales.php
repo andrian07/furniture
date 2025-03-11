@@ -235,6 +235,15 @@ class Sales extends CI_Controller {
 		echo json_encode($result);
 	}
 
+	public function get_customer_info()
+	{
+		$id  = $this->input->post('id');
+		$data = $this->sales_model->get_customer_info($id);
+		echo json_encode(['code'=>200, 'data'=>$data]);
+		die();
+
+	}
+
 	public function get_temp_sales()
 	{
 		$userid = $_SESSION['user_id'];

@@ -117,6 +117,13 @@ class sales_model extends CI_Model {
         return $result;
     }
 
+    public function get_customer_info($id)
+    {
+        $query = $this->db->query("select * from ms_customer where customer_id = '".$id."'");
+        $result = $query->result();
+        return $result;
+    }
+
     public function update_stock($product_id, $new_stock)
     {
         $this->db->set('item_stock', $new_stock);
