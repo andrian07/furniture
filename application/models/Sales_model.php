@@ -124,6 +124,20 @@ class sales_model extends CI_Model {
         $this->db->update('ms_product_detail');
     }
 
+    public function update_stock_not_send($product_id, $new_stock_not_send)
+    {
+        $this->db->set('item_not_send', $new_stock_not_send);
+        $this->db->where('item_id', $product_id);
+        $this->db->update('ms_product_detail');
+    }
+
+    public function update_delivery_status($id)
+    {
+        $this->db->set('hd_delivery_status', 'Sudah');
+        $this->db->where('hd_sales_id ', $id);
+        $this->db->update('hd_sales');
+    }
+
 }
 
 ?>  

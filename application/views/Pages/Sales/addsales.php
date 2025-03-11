@@ -140,7 +140,15 @@ require DOC_ROOT_PATH . $this->config->item('header');
               <option value="Kredit">Kredit</option>
             </select>
           </div>
+          <label for="user" class="col-sm-1 text-right label-insert">Pengambilan :</label>
+          <div class="col-sm-3">
+            <select class="form-control select2" name="sendtype" id="sendtype" >
+              <option value="send">Ambil Sekarang (Tidak Di kirim)</option>
+              <option value="notsend">Ambil Nanti(Dikirim)</option>
+            </select>
+          </div>
         </div>
+        
 
       </div>
     </div>
@@ -464,6 +472,7 @@ require DOC_ROOT_PATH . $this->config->item('footer');
       var send_date                     = $("#send_date").val();
       var type                          = $("#type").val();
       var due_date                      = $("#due_date").val();
+      var sendtype                      = $("#sendtype").val();
       var footer_discount_submit        = footer_discount.get();
       var footer_sub_total_submit       = footer_sub_total.get();
       var footer_total_ppn_submit       = footer_total_ppn.get();
@@ -489,7 +498,7 @@ require DOC_ROOT_PATH . $this->config->item('footer');
         type: "POST",
         url: "<?php echo base_url(); ?>Sales/save_sales",
         dataType: "json",
-        data: {customer_id:customer_id, no_hp:no_hp, address:address, payment_id:payment_id, sales_id:sales_id, send_date:send_date, type:type, due_date:due_date, footer_discount_submit:footer_discount_submit, footer_sub_total_submit:footer_sub_total_submit, footer_total_ppn_submit:footer_total_ppn_submit, footer_total_invoice_submit:footer_total_invoice_submit, footer_dp_submit:footer_dp_submit, footer_remaining_debt_submit:footer_remaining_debt_submit},
+        data: {customer_id:customer_id, no_hp:no_hp, address:address, payment_id:payment_id, sales_id:sales_id, send_date:send_date, type:type, due_date:due_date, sendtype:sendtype, footer_discount_submit:footer_discount_submit, footer_sub_total_submit:footer_sub_total_submit, footer_total_ppn_submit:footer_total_ppn_submit, footer_total_invoice_submit:footer_total_invoice_submit, footer_dp_submit:footer_dp_submit, footer_remaining_debt_submit:footer_remaining_debt_submit},
         success : function(data){
           if (data.code == "200"){
             window.location.href = "<?php echo base_url(); ?>Sales";

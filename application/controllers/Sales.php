@@ -62,6 +62,7 @@ class Sales extends CI_Controller {
 		$send_date 						= $this->input->post('send_date');
 		$type 							= $this->input->post('type');
 		$due_date    					= $this->input->post('due_date');
+		$sendtype 						= $this->input->post('sendtype');
 		$footer_discount_submit 		= $this->input->post('footer_discount_submit');
 		$footer_sub_total_submit 		= $this->input->post('footer_sub_total_submit');
 		$footer_total_ppn_submit 		= $this->input->post('footer_total_ppn_submit');
@@ -91,6 +92,12 @@ class Sales extends CI_Controller {
 			$gol = 'N';
 		}
 
+		if($sendtype == 'notsend'){
+			$status_send = 'Belum';
+		}else{
+			$status_send = 'Sudah';
+		}
+
 		$data_insert = array(
 			'hd_sales_invoice'	    	=> $last_code,
 			'hd_sales_date'	    		=> $date,
@@ -99,6 +106,7 @@ class Sales extends CI_Controller {
 			'hd_sales_phone'	    	=> $no_hp,
 			'hd_sales_payment_type'	    => $payment_id,
 			'hd_sales_sales'	       	=> $sales_id,
+			'hd_delivery_status'		=> $status_send,
 			'hd_sales_send_date'	    => $send_date,
 			'hd_sales_due_date'	    	=> $due_date,
 			'hd_sales_subtotal'	       	=> $footer_sub_total_submit,
@@ -133,6 +141,13 @@ class Sales extends CI_Controller {
 			$new_stock = $last_stock - $qty;
 			$this->sales_model->update_stock($product_id, $new_stock);
 			$this->stock_movement_minus($product_id, $qty, $userid, $last_code, $last_stock, $new_stock);
+
+			$last_stock_not_send  = $get_last_stock[0]->item_not_send;
+			$new_stock_not_send = $last_stock_not_send + $qty;
+			if($sendtype == 'notsend'){
+				$this->sales_model->update_stock_not_send($product_id, $new_stock_not_send);
+			}
+
 		}
 		
 		$this->sales_model->clear_temp_sales($userid);
@@ -320,6 +335,28 @@ class Sales extends CI_Controller {
 		$get_detail_sales_detail['get_detail_sales_detail'] = $this->sales_model->get_detail_sales_detail($id);
 		$data['data'] = array_merge($get_detail_sales_header, $get_detail_sales_detail);
 		$this->load->view('Pages/Sales/invoice', $data);
+	}
+
+	public function invoice_dispatch()
+	{
+		$id = $this->input->get('id');
+		$get_detail_sales_header['get_detail_sales_header'] = $this->sales_model->get_detail_sales_header($id);
+		$get_detail_sales_detail['get_detail_sales_detail'] = $this->sales_model->get_detail_sales_detail($id);
+		$get_detail_sales_detail_dispatch = $this->sales_model->get_detail_sales_detail($id);
+		if($get_detail_sales_header['get_detail_sales_header'][0]->hd_delivery_status == 'Belum'){
+			foreach($get_detail_sales_detail_dispatch as $row){
+				$product_id = $row->dt_sales_product_id;
+				$qty = $row->dt_sales_qty;
+
+				$get_last_stock = $this->sales_model->get_last_stock($product_id);
+				$last_stock_not_send  = $get_last_stock[0]->item_not_send;
+				$new_stock_not_send = $last_stock_not_send - $qty;
+				$this->sales_model->update_stock_not_send($product_id, $new_stock_not_send);
+			}
+			$this->sales_model->update_delivery_status($id);
+		}
+		$data['data'] = array_merge($get_detail_sales_header, $get_detail_sales_detail);
+		$this->load->view('Pages/Sales/dispatch', $data);
 	}
 
 	public function delete_sales()

@@ -422,10 +422,6 @@ class Masterdata extends CI_Controller {
 			echo json_encode(['code'=>0, 'result'=>$msg]);die();
 		}
 
-		if($customer_ktp == null){
-			$msg = "No KTP Harus Di isi";
-			echo json_encode(['code'=>0, 'result'=>$msg]);die();
-		}
 
 		$maxCode  	        = $this->master_model->get_max_cust_code();
 		if ($maxCode == NULL) {
@@ -472,11 +468,6 @@ class Masterdata extends CI_Controller {
 
 		if($customer_phone == null){
 			$msg = "No Telepon Harus Di isi";
-			echo json_encode(['code'=>0, 'result'=>$msg]);die();
-		}
-
-		if($customer_ktp == null){
-			$msg = "No KTP Harus Di isi";
 			echo json_encode(['code'=>0, 'result'=>$msg]);die();
 		}
 

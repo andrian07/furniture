@@ -67,6 +67,7 @@ require DOC_ROOT_PATH . $this->config->item('header');
               <th>Total Harga</th>
               <th>Status</th>
               <th>Status Pembayaran</th>
+              <th>Pengiriman</th>
               <th>Aksi</th>
             </tr>
           </thead>
@@ -80,28 +81,31 @@ require DOC_ROOT_PATH . $this->config->item('header');
                 <td><?php echo 'Rp. '.number_format($row->hd_sales_discount); ?></td>
                 <td><?php echo 'Rp. '.number_format($row->hd_sales_total); ?></td>
                 <td><?php if($row->hd_sales_status == 'Success'){ echo '<span class="badge badge-success">Success</span>';}else{ echo '<span class="badge badge-danger">Cancel</span>';} ?>
-                </td>
-                <td><?php if($row->hd_sales_dp <= 0){ echo '<span class="badge badge-success">Lunas</span>';}else{ echo '<span class="badge badge-danger">Belum Lunas</span>';} ?>
-                </td>
-                <td>
-                  <button class="btn btn-sm btn-primary" onclick="detail('<?php echo $row->hd_sales_id; ?>')"><i class="fas fa-eye"></i></button>
-                  <button class="btn btn-sm btn-danger" onclick="deletes('<?php echo $row->hd_sales_id; ?>', '<?php echo $row->hd_sales_invoice; ?>')"><i class="fas fa-trash"></i></button>
-                   <button class="btn btn-sm btn-info" onclick="print_invoice('<?php echo $row->hd_sales_id; ?>', '<?php echo $row->hd_sales_invoice; ?>')"><i class="fas fa-print"></i></button>
-                </td>
-              </tr>
-            <?php } ?>
-          </tbody>
-        </table>
-      </div>
-      <!-- /.card-body -->
-      <!-- /.card-footer-->
-    </div>
+              </td>
+              <td><?php if($row->hd_sales_remaining_debt <= 0){ echo '<span class="badge badge-success">Lunas</span>';}else{ echo '<span class="badge badge-danger">Belum Lunas</span>';} ?>
+            </td>
+            <td><?php if($row->hd_delivery_status == 'Sudah'){ echo '<span class="badge badge-success">Terkirim</span>';}else{ echo '<span class="badge badge-danger">Belum Di Kirim</span>';} ?>
+          </td>
+          <td>
+            <button class="btn btn-sm btn-primary" onclick="detail('<?php echo $row->hd_sales_id; ?>')"><i class="fas fa-eye"></i></button>
+            <button class="btn btn-sm btn-danger" onclick="deletes('<?php echo $row->hd_sales_id; ?>', '<?php echo $row->hd_sales_invoice; ?>')"><i class="fas fa-trash"></i></button>
+            <button class="btn btn-sm btn-info" onclick="print_invoice('<?php echo $row->hd_sales_id; ?>', '<?php echo $row->hd_sales_invoice; ?>')"><i class="fas fa-print"></i></button>
+            <button class="btn btn-sm btn-warning" onclick="print_dispatch('<?php echo $row->hd_sales_id; ?>', '<?php echo $row->hd_sales_invoice; ?>')"><i class="fas fa-truck"></i></button>
+          </td>
+        </tr>
+      <?php } ?>
+    </tbody>
+  </table>
+</div>
+<!-- /.card-body -->
+<!-- /.card-footer-->
+</div>
 
 
-    <!-- /.card -->
+<!-- /.card -->
 
-  </section>
-  <!-- /.content -->
+</section>
+<!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
 
@@ -146,7 +150,24 @@ require DOC_ROOT_PATH . $this->config->item('footer');
 
   function print_invoice(id, name)
   {
-     window.location.href = '<?php echo base_url(); ?>Sales/invoice?id='+id;
+    window.location.href = '<?php echo base_url(); ?>Sales/invoice?id='+id;
+  }
+
+  function print_dispatch(id, name)
+  { 
+    Swal.fire({
+      title: 'Konfirmasi?',
+      text: "Apakah Anda Ingin Mengirimkan Pesanan '"+name+"' ?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Kirim'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = '<?php echo base_url(); ?>Sales/invoice_dispatch?id='+id;
+      }
+    })
   }
 </script>
 <script type="text/javascript">

@@ -147,7 +147,7 @@
                         </div>
                         <div class="col-md-6" style="width: 70%;">
                             <div class="header-title" style="text-align: center; ">
-                                <h2 style="text-decoration: underline;">Nota Penjualan</h2>
+                                <h2 style="text-decoration: underline;">Surat Jalan</h2>
                                 <p>Homeliving Furniture & Electronics <br />
                                 Jl. Raya Desa Kapur Desa Mekar No 1- 3 <br />
                                 0812-508-6166 / IG: Homeliving</p>
@@ -177,20 +177,15 @@
                     <table width="100%" class="header-table-title" style="border-top:1px #000 solid; border-collapse: collapse; width: 100%; margin-top: 10px;margin-left: -10px;">
                         <tbody style="min-height: 300px;display: block;">
                             <tr>
-                                <td width="40%" style="border-bottom: 1px #000 solid;">Nama Produk</td>
-                                <td width="15%" style="border-bottom: 1px #000 solid;">Harga</td>
-                                <td width="13%" style="border-bottom: 1px #000 solid;">Qty</td>
-                                <td width="13%" style="border-bottom: 1px #000 solid;">Diskon</td>
-                                <td width="50%" style="border-bottom: 1px #000 solid;">Jumlah</td>
+                                <td width="80%" style="border-bottom: 1px #000 solid;">Nama Produk</td>
+                                <td width="20%" style="border-bottom: 1px #000 solid;">Qty</td>
                                 <td width="1%"></td>
                             </tr>
                             <?php foreach ($data['get_detail_sales_detail'] as $row) { ?>
                                 <tr style="height:5px;">
                                     <td class="no-border"><?php echo $row->item_name; ?></td>
-                                    <td class="no-border"><?php echo 'Rp. '.number_format($row->dt_sales_price); ?></td>
+                                
                                     <td class="no-border"><?php echo $row->dt_sales_qty; ?></td>
-                                    <td class="no-border"><?php echo 'Rp. '.number_format($row->dt_sales_discount); ?></td>
-                                    <td class="no-border"><?php echo 'Rp. '.number_format($row->dt_sales_total); ?></td>
                                 </tr>
                             <?php } ?>
                         </tbody>
@@ -208,7 +203,7 @@
                                 Permata: 1234567890 <br />
                             </p>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-10">
                             <table width="100%" style="height:160px;">
                                 <tr>
                                     <td style="text-align:center;">Sales, </td>
@@ -222,27 +217,7 @@
                                 </tr>
                             </table>
                         </div>
-                        <div class="col-md-4">
-                            <table width="100%" class="footer-table-inv">
-                                <?php foreach ($data['get_detail_sales_header'] as $row) { ?>
-                                <tr>
-                                    <td style="text-align:right; font-weight: 600;">Subtotal</td>
-                                    <td>:</td>
-                                    <td style="text-align:right;"><?php echo 'Rp. '.number_format($row->hd_sales_subtotal); ?></td>
-                                </tr>
-                                 <tr>
-                                    <td style="text-align:right; font-weight: 600;">Disc</td>
-                                    <td>:</td>
-                                    <td style="text-align:right;"><?php echo 'Rp. '.number_format($row->hd_sales_discount); ?></td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align:right; font-weight: 600;">Total</td>
-                                    <td>:</td>
-                                    <td style="text-align:right;"><?php echo 'Rp. '.number_format($row->hd_sales_total); ?></td>
-                                </tr>
-                            <?php } ?>
-                            </table>
-                        </div>
+
                     </div>
 
                     <!--
