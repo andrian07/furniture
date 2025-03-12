@@ -86,7 +86,7 @@ class retur_model extends CI_Model {
 
     public function check_retur_item($item_id_temp, $retur_sales_inv)
     {
-         $query = $this->db->query("select * from hd_retur_sales a, dt_retur_sales b where a.hd_retur_sales_invoice = b.dt_retur_sales_invoice and dt_retur_item_id = '".$item_id_temp."' and hd_retur_sales_invoice = '".$retur_sales_inv."'");
+         $query = $this->db->query("select sum(dt_retur_qty) as total_retur_qty from hd_retur_sales a, dt_retur_sales b where a.hd_retur_sales_invoice = b.dt_retur_sales_invoice and dt_retur_item_id = '".$item_id_temp."' and hd_retur_sales_invoice = '".$retur_sales_inv."'");
         $result = $query->result();
         return $result;
     }

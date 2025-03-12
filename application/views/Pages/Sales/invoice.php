@@ -238,6 +238,16 @@
                                 <tr>
                                     <td style="text-align:right; font-weight: 600;">Total</td>
                                     <td>:</td>
+                                    <td style="text-align:right;"><?php echo 'Rp. '.number_format($row->hd_sales_subtotal); ?></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right; font-weight: 600;">DP</td>
+                                    <td>:</td>
+                                    <td style="text-align:right;"><?php echo 'Rp. '.number_format($row->hd_sales_dp); ?></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right; font-weight: 600;">Sisa Bayar</td>
+                                    <td>:</td>
                                     <td style="text-align:right;"><?php echo 'Rp. '.number_format($row->hd_sales_total); ?></td>
                                 </tr>
                             <?php } ?>

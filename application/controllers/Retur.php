@@ -410,6 +410,10 @@ class Retur extends CI_Controller {
 		}
 
 		$check_retur_item = $this->retur_model->check_retur_item($item_id_temp, $retur_sales_inv);
+		if($check_retur_item[0]->total_retur_qty > $temp_qty_retur){
+			$msg = "Tidak Bisa Retur Melebihi Trx";
+			echo json_encode(['code'=>0, 'result'=>$msg]);die();
+		}
 
 		$check_input_temp = $this->retur_model->get_edit_retur_sales_temp($item_id_temp, $user_id);
 
