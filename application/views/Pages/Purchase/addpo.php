@@ -45,7 +45,7 @@ require DOC_ROOT_PATH . $this->config->item('header');
           <div class="col-sm-3">
             <select class="form-control select2" name="supplier_id" id="supplier_id" >
               <option></option>
-              <?php foreach($data['supplier_list'] as $row){ ?>
+              <?php foreach($supplier_list as $row){ ?>
                 <option value="<?php echo $row->supplier_id; ?>"><?php echo $row->supplier_name; ?></option>
               <?php  } ?>
             </select>

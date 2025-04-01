@@ -43,7 +43,6 @@ require DOC_ROOT_PATH . $this->config->item('header');
         <div class="form-group row">
           <label for="no_po" class="col-sm-1 text-right label-insert">No PO :</label>
           <div class="col-sm-3">
-
             <input id="po_id" name="po_id" type="hidden" class="">
             <input id="no_po" name="no_po" type="text" class="form-control ui-autocomplete-input" placeholder="Pilih PO">
           </div>

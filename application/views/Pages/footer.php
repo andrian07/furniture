@@ -62,10 +62,7 @@
 
 <script type="text/javascript">
   new DataTable('#example');
-</script>
-
-<script type="text/javascript">
-  new DataTable('#examples');
+  
 </script>
 
 

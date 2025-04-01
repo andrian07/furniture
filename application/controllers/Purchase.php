@@ -56,9 +56,9 @@ class Purchase extends CI_Controller {
 	public function add_po(){
 		$this->check_auth();
 		$supplier_list['supplier_list'] = $this->master_model->supplier_list();
-		$product_list['product_list'] = $this->master_model->product_list();
-		$data['data'] = array_merge($supplier_list, $product_list);
-		$this->load->view('Pages/Purchase/addpo', $data);
+		//$product_list['product_list'] = $this->master_model->product_list();
+		//$data['data'] = array_merge($supplier_list, $product_list);
+		$this->load->view('Pages/Purchase/addpo', $supplier_list);
 	}
 
 	public function search_product_supplier()
@@ -322,9 +322,9 @@ class Purchase extends CI_Controller {
 		$this->check_auth();
 		$po_list_pending['po_list_pending'] = $this->purchase_model->po_list_pending();
 		$supplier_list['supplier_list'] = $this->master_model->supplier_list();
-		$product_list['product_list'] = $this->master_model->product_list();
+		//$product_list['product_list'] = $this->master_model->product_list();
 		$payment_list['payment_list'] = $this->master_model->payment_list();
-		$data['data'] = array_merge($supplier_list, $product_list, $po_list_pending, $payment_list);
+		$data['data'] = array_merge($supplier_list, $po_list_pending, $payment_list);
 		$this->load->view('Pages/Purchase/addpurchase', $data);
 	}
 

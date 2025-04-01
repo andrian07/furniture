@@ -17,6 +17,10 @@ class sales_model extends CI_Model {
         $this->db->insert('dt_sales', $data_insert_detail);
     }
 
+    public function insert_report_minus($data_insert_minus)
+    {
+        $this->db->insert('report_minus_sales', $data_insert_minus);
+    }
 
     public function edit_temp_sales($data_edit, $item_id_temp, $user_id)
     {

@@ -276,6 +276,16 @@ class report_model extends CI_Model {
         return $query;
     }
 
+    public function get_sales_minus($start_date, $end_date)
+    {
+        $this->db->select('*');
+        $this->db->join('ms_product_detail', 'report_minus_sales.report_minus_sales_product_id = ms_product_detail.item_id ');
+        $this->db->where('report_minus_sales_date between "'.$start_date.'" and "'.$end_date.'"');
+        $q =  $this->db->get('report_minus_sales');
+        $query = $q->result_array();
+        return $query;
+    }
+
     public function stock_card($category_id, $brand_id)
     {
         $this->db->select('*');

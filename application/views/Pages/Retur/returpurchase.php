@@ -167,4 +167,5 @@ require DOC_ROOT_PATH . $this->config->item('footer');
     window.location.href = '<?php echo base_url(); ?>Retur/detail_retur_purchase?id='+id;
   }
 
+  
 </script>

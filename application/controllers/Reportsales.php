@@ -70,7 +70,7 @@ class Reportsales extends CI_Controller {
 		$dompdf->loadHtml($htmlView);
 		$dompdf->setPaper('A4', 'landscape');
 		$dompdf->render();
-		$dompdf->stream('daftar_po.pdf', array("Attachment" => false));
+		$dompdf->stream('daftar_sales.pdf', array("Attachment" => false));
 		exit();
 	}
 
@@ -217,7 +217,7 @@ class Reportsales extends CI_Controller {
     	$dompdf->loadHtml($htmlView);
     	$dompdf->setPaper('A4', 'landscape');
     	$dompdf->render();
-    	$dompdf->stream('daftar_po.pdf', array("Attachment" => false));
+    	$dompdf->stream('daftar_sales_jatuh_tempo.pdf', array("Attachment" => false));
     	exit();
     }
 
@@ -419,7 +419,7 @@ class Reportsales extends CI_Controller {
     	$dompdf->loadHtml($htmlView);
     	$dompdf->setPaper('A4', 'landscape');
     	$dompdf->render();
-    	$dompdf->stream('daftar_po.pdf', array("Attachment" => false));
+    	$dompdf->stream('daftar_retur_sales.pdf', array("Attachment" => false));
     	exit();
     }
 
@@ -452,7 +452,7 @@ class Reportsales extends CI_Controller {
 
     	// Buat header tabel nya pada baris ke 3
     	$sheet->setCellValue('A3', "No Retur Penjualan"); 
-    	$sheet->setCellValue('B3', "Csutomer"); 
+    	$sheet->setCellValue('B3', "Customer"); 
     	$sheet->setCellValue('C3', "Nama Customer"); 
     	$sheet->setCellValue('D3', "No Penjualan");
     	$sheet->setCellValue('E3', "Tanggal");
@@ -523,6 +523,98 @@ class Reportsales extends CI_Controller {
     	exit($xlsxWriter->save('php://output'));
     }
 
+
+    public function sales_minus_view()
+    {
+    	$this->check_auth();
+    	$this->load->view('Pages/Report/report_sales_minus');
+    }
+
+    public function sales_minus_pdf()
+    {
+    	$this->check_auth();
+    	$start_date = $this->input->get('start_date');
+    	$end_date = $this->input->get('end_date');
+    	if($start_date == null){
+    		$start_date = date('Y-m-01');
+    	}
+    	if($end_date == null){
+    		$end_date = date('Y-m-d');
+    	}
+    	$data['data'] = $this->report_model->get_sales_minus($start_date, $end_date);
+    	$htmlView   = $this->load->view('Pages/Report/report_sales_minus_pdf', $data, true);
+    	$dompdf = new Dompdf();
+    	$dompdf->loadHtml($htmlView);
+    	$dompdf->setPaper('A4', 'landscape');
+    	$dompdf->render();
+    	$dompdf->stream('sales_minus.pdf', array("Attachment" => false));
+    	exit();
+    }
+
+    public function sales_minus_excell()
+    {
+    	$this->check_auth();
+
+    	$start_date = $this->input->get('start_date');
+    	$end_date = $this->input->get('end_date');
+
+    	if($start_date == null){
+    		$start_date = date('Y-m-01');
+    	}
+    	if($end_date == null){
+    		$end_date = date('Y-m-d');
+    	}
+
+    	$data  = $this->report_model->get_sales_minus($start_date, $end_date);
+    	$excel = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+    	$sheet = $excel->getActiveSheet();
+
+		$sheet->setCellValue('A1', "Laporan Penjualan Minus"); // Set kolom A1 dengan tulisan "DATA SISWA"
+    	$sheet->mergeCells('A1:L1'); // Set Merge Cell pada kolom A1 sampai E1
+    	$sheet->getStyle('A1')->getFont()->setBold(true);
+    	$sheet->getStyle('A3:L3')->getFont()->setBold(true);
+
+    	$sheet->getStyle('A1')->getAlignment()->setHorizontal('center');
+    	$sheet->getStyle('A3:L3')->getAlignment()->setHorizontal('center');
+
+    	// Buat header tabel nya pada baris ke 3
+    	$sheet->setCellValue('A3', "Nama Produk"); 
+    	$sheet->setCellValue('B3', "No Invoice Sales"); 
+    	$sheet->setCellValue('C3', "Tanggal	"); 
+    	$sheet->setCellValue('D3', "Qty Jual");
+    	$sheet->setCellValue('E3', "Stok Setelah Jual");
+
+    	$i = 4;
+    	$last_retur_sales_invoice = '';
+    	foreach($data as $row){
+
+    		$sheet->setCellValue('A'.$i, $row['item_name']); 
+    		$sheet->setCellValue('B'.$i, $row['report_minus_sales_invoice']); 
+    		$sheet->setCellValue('C'.$i, $row['report_minus_sales_date']);
+    		$sheet->setCellValue('D'.$i, $row['report_minus_sales_qty']);
+    		$sheet->setCellValue('E'.$i, $row['report_minus_sales_qty'] - $row['report_minus_sales_before_qty']);
+    		$i++;
+    	}
+
+    	$sheet->getColumnDimension('A')->setWidth(55); 
+    	$sheet->getColumnDimension('B')->setWidth(35);
+    	$sheet->getColumnDimension('C')->setWidth(35);
+    	$sheet->getColumnDimension('D')->setWidth(35); 
+    	$sheet->getColumnDimension('E')->setWidth(35);
+
+
+    	$sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
+    	$sheet->setTitle("Excell");
+
+    	ob_end_clean();
+    	header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    	header('Content-Disposition: attachment;filename="laporanPenjualanMinus_' .date('Y-m-d') . '.xlsx"');
+    	header('Cache-Control: max-age=0');
+
+    	$xlsxWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($excel, 'Xlsx');
+    	$xlsxWriter = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($excel);
+    	exit($xlsxWriter->save('php://output'));
+    }
 }
 
 ?>

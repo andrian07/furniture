@@ -84,9 +84,16 @@ class retur_model extends CI_Model {
         return $result;
     }
 
-    public function check_retur_item($item_id_temp, $retur_sales_inv)
+    public function check_retur_item_sales($item_id_temp, $sales_no)
     {
-         $query = $this->db->query("select sum(dt_retur_qty) as total_retur_qty from hd_retur_sales a, dt_retur_sales b where a.hd_retur_sales_invoice = b.dt_retur_sales_invoice and dt_retur_item_id = '".$item_id_temp."' and hd_retur_sales_invoice = '".$retur_sales_inv."'");
+         $query = $this->db->query("select sum(dt_retur_qty) as total_retur_qty from hd_retur_sales a, dt_retur_sales b where a.hd_retur_sales_invoice = b.dt_retur_sales_invoice and dt_retur_item_id = '".$item_id_temp."' and hd_sales_no = '".$sales_no."'");
+        $result = $query->result();
+        return $result;
+    }
+
+    public function check_retur_item_purchase($item_id_temp, $purchase_no)
+    {
+         $query = $this->db->query("select sum(dt_retur_qty) as total_retur_qty from hd_retur_purchase a, dt_retur_purchase b where a.hd_retur_purchase_invoice = b.dt_retur_purchase_invoice and dt_retur_item_id = '".$item_id_temp."' and hd_purchase_no = '".$purchase_no."'");
         $result = $query->result();
         return $result;
     }
@@ -247,6 +254,21 @@ class retur_model extends CI_Model {
         return $result;
     }
 
+    public function remaining_debt_purchase($purchase_no)
+    {
+        $query = $this->db->query("select hd_purchase_remaining_debt from hd_purchase where hd_purchase_id  = '".$purchase_no."'");
+        $result = $query->result();
+        return $result;
+    }
+
+    public function remaining_debt_sales($sales_no)
+    {
+        $query = $this->db->query("select hd_sales_remaining_debt from hd_sales where hd_sales_id  = '".$sales_no."'");
+        $result = $query->result();
+        return $result;
+    }
+
+
     public function delete_retur_purchase($id)
     {
         $this->db->set('hd_retur_status','cancel');
@@ -259,6 +281,20 @@ class retur_model extends CI_Model {
         $this->db->set('hd_retur_status','cancel');
         $this->db->where('hd_retur_sales_id ', $id);
         $this->db->update('hd_retur_sales');
+    }
+
+    public function update_remaining_debt_purchase($purchase_no)
+    {
+        $this->db->set('hd_purchase_remaining_debt', '0');
+        $this->db->where('hd_purchase_id  ', $purchase_no);
+        $this->db->update('hd_purchase');
+    }
+
+    public function update_remaining_debt_sales($sales_no)
+    {
+        $this->db->set('hd_sales_remaining_debt', '0');
+        $this->db->where('hd_sales_id  ', $sales_no);
+        $this->db->update('hd_sales');
     }
 }
 

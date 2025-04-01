@@ -1075,5 +1075,65 @@ class Masterdata extends CI_Controller {
 	}
 	// end product package //
 
+	// user //
+
+	public function user()
+	{	
+		$this->check_auth();
+		$user_list['user_list'] = $this->master_model->user_list();
+		$this->load->view('Pages/Master/user', $user_list);
+	}
+
+	public function insert_user()
+	{
+		$user_name   	   = $this->input->post('user_name');
+
+		if($user_name == null){
+			$msg = "Nama User Harus Di isi";
+			echo json_encode(['code'=>0, 'result'=>$msg]);die();
+		}
+		$insert = array(
+			'user_name'	       => $user_name,
+			'user_password'	   => md5('12345'),
+			'user_role'		   => 2
+		);
+		$this->master_model->save_user($insert);
+		$msg = "Succes Input";
+		echo json_encode(['code'=>200, 'result'=>$msg]);
+		die();
+	}
+
+	public function edit_user()
+	{
+		$user_id   	   = $this->input->post('id');
+		$user_name     = $this->input->post('user_name_edit');
+
+		if($user_name == null){
+			$msg = "Nama User Harus Di isi";
+			echo json_encode(['code'=>0, 'result'=>$msg]);die();
+		}
+
+		$update = array(
+			'user_name'	       => $user_name
+		);
+
+		$this->master_model->update_user($update, $user_id);
+		$msg = "Succes Update";
+		echo json_encode(['code'=>200, 'result'=>$msg]);
+		die();
+	}
+
+	public function delete_user()
+	{
+
+		$user_id  = $this->input->post('id');
+		$this->master_model->delete_user($user_id);
+		$msg = "Succes Delete";
+		echo json_encode(['code'=>200, 'result'=>$msg]);
+		die();
+
+	}
+	// End Brand //
+
 }
 

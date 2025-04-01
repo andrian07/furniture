@@ -57,7 +57,7 @@ require DOC_ROOT_PATH . $this->config->item('header');
         </div>
       </div>
       <div class="card-body">
-        <table id="example" class="table table-bordered" style="width:100%">
+        <table id="examplepurchase" class="table table-bordered" style="width:100%">
           <thead>
             <tr>
               <th>No Invoice</th>
@@ -81,27 +81,27 @@ require DOC_ROOT_PATH . $this->config->item('header');
                 <td><?php echo $row->supplier_name; ?></td>
                 <td><?php echo 'Rp. '.number_format($row->hd_purchase_total); ?></td>
                 <td><?php if($row->hd_purchase_status == 'success'){ echo '<span class="badge badge-success">Sukses</span>';}else{ echo '<span class="badge badge-danger">Cancel</span>';} ?>
-                </td>
-                <td><?php if($row->hd_purchase_remaining_debt <= 0){ echo '<span class="badge badge-success">Lunas</span>';}else{ echo '<span class="badge badge-danger">Belum Lunas</span>';} ?>
-                </td>
-                <td>
-                  <button class="btn btn-sm btn-primary" onclick="detail('<?php echo $row->hd_purchase_id; ?>')"><i class="fas fa-eye"></i></button>
-                  <button class="btn btn-sm btn-danger" onclick="deletes('<?php echo $row->hd_purchase_id; ?>', '<?php echo $row->hd_purchase_invoice; ?>')"><i class="fas fa-trash"></i></button>
-                </td>
-              </tr>
-            <?php } ?>
-          </tbody>
-        </table>
-      </div>
-      <!-- /.card-body -->
-      <!-- /.card-footer-->
-    </div>
+              </td>
+              <td><?php if($row->hd_purchase_remaining_debt <= 0){ echo '<span class="badge badge-success">Lunas</span>';}else{ echo '<span class="badge badge-danger">Belum Lunas</span>';} ?>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-primary" onclick="detail('<?php echo $row->hd_purchase_id; ?>')"><i class="fas fa-eye"></i></button>
+              <button class="btn btn-sm btn-danger" onclick="deletes('<?php echo $row->hd_purchase_id; ?>', '<?php echo $row->hd_purchase_invoice; ?>')"><i class="fas fa-trash"></i></button>
+            </td>
+          </tr>
+        <?php } ?>
+      </tbody>
+    </table>
+  </div>
+  <!-- /.card-body -->
+  <!-- /.card-footer-->
+</div>
 
 
-    <!-- /.card -->
+<!-- /.card -->
 
-  </section>
-  <!-- /.content -->
+</section>
+<!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
 
@@ -171,4 +171,7 @@ require DOC_ROOT_PATH . $this->config->item('footer');
     window.location.href = '<?php echo base_url(); ?>Purchase/detail_purchase?id='+id;
   }
 
+  new DataTable('#examplepurchase', {
+    order: [[1, 'desc']]
+  });
 </script>

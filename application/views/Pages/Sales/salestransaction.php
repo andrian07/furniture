@@ -56,7 +56,7 @@ require DOC_ROOT_PATH . $this->config->item('header');
         </div>
       </div>
       <div class="card-body">
-        <table id="example" class="table table-bordered" style="width:100%">
+        <table id="examplesales" class="table table-bordered" style="width:100%">
           <thead>
             <tr>
               <th>No Invoice</th>
@@ -196,5 +196,9 @@ require DOC_ROOT_PATH . $this->config->item('footer');
   function detail(id){
     window.location.href = '<?php echo base_url(); ?>Sales/detail_sales?id='+id;
   }
+
+  new DataTable('#examplesales', {
+    order: [[1, 'desc']]
+  });
 
 </script>

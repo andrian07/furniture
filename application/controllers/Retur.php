@@ -123,6 +123,13 @@ class Retur extends CI_Controller {
 			echo json_encode(['code'=>0, 'result'=>$msg]);die();
 		}
 
+		$check_retur_item = $this->retur_model->check_retur_item_purchase($item_id_temp, $purchase_no);
+		$total_retur_count = $check_retur_item[0]->total_retur_qty + $temp_qty_retur;
+		if($total_retur_count > $qty_temp){
+			$msg = "Tidak Bisa Retur Melebihi Trx";
+			echo json_encode(['code'=>0, 'result'=>$msg]);die();
+		}
+
 		$check_temp_retur_purchase_qty = $this->retur_model->check_temp_retur_purchase_qty($purchase_no, $item_id_temp);
 		if($check_temp_retur_purchase_qty != null){
 			$total_qty_retur = $check_temp_retur_purchase_qty[0]->total_qty_retur;
@@ -264,6 +271,15 @@ class Retur extends CI_Controller {
 			$this->retur_model->update_stock($product_id, $new_stock);
 			$this->stock_movement_plus($product_id, $qty, $userid, $last_code, $last_stock, $new_stock, $desc);
 		}
+
+		if($payment_type == 'Ya'){
+			$remaining_debt_purchase = $this->retur_model->remaining_debt_purchase($purchase_no);
+			$remaining_debt = $remaining_debt_purchase[0]->hd_purchase_remaining_debt;
+			if($total_retur_inv >= $remaining_debt){
+				$this->retur_model->update_remaining_debt_purchase($purchase_no);
+			}
+		}
+		
 		
 		//$update_nominal_retur = $this->retur_model->update_nominal_retur($userid);
 
@@ -409,8 +425,9 @@ class Retur extends CI_Controller {
 			echo json_encode(['code'=>0, 'result'=>$msg]);die();
 		}
 
-		$check_retur_item = $this->retur_model->check_retur_item($item_id_temp, $retur_sales_inv);
-		if($check_retur_item[0]->total_retur_qty > $temp_qty_retur){
+		$check_retur_item = $this->retur_model->check_retur_item_sales($item_id_temp, $sales_no);
+		$total_retur_count = $check_retur_item[0]->total_retur_qty + $temp_qty_retur;
+		if($total_retur_count > $qty_temp){
 			$msg = "Tidak Bisa Retur Melebihi Trx";
 			echo json_encode(['code'=>0, 'result'=>$msg]);die();
 		}
@@ -542,6 +559,14 @@ class Retur extends CI_Controller {
 			$desc = 'Retur Penjualan';
 			$this->retur_model->update_stock($product_id, $new_stock);
 			$this->stock_movement_plus($product_id, $qty, $userid, $last_code, $last_stock, $new_stock, $desc);
+		}
+
+		if($payment_type == 'Ya'){
+			$remaining_debt_sales = $this->retur_model->remaining_debt_sales($sales_no);
+			$remaining_debt = $remaining_debt_sales[0]->hd_sales_remaining_debt;
+			if($total_retur_inv >= $remaining_debt){
+				$this->retur_model->update_remaining_debt_sales($sales_no);
+			}
 		}
 		
 		$this->retur_model->clear_temp_retur_sales($userid);

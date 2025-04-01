@@ -54,7 +54,7 @@ require DOC_ROOT_PATH . $this->config->item('header');
         <!-- /.card -->
       </div>
 
-
+      <?php if($_SESSION['user_role'] == 1){ ?>
       <div class="col-md-4">
         <div class="card card-success">
           <div class="card-header">
@@ -100,13 +100,14 @@ require DOC_ROOT_PATH . $this->config->item('header');
               <li class="list-group-item"><a href="<?php echo base_url(); ?>Reportsales/sales_due_view" class="text-primary">Laporan Penjualan Jatuh Tempo</a></li>
               <li class="list-group-item"><a href="<?php echo base_url(); ?>Reportsales/sales_not_send_view" class="text-primary">Laporan Penjualan Belum Terkirim</a></li>
               <li class="list-group-item"><a href="<?php echo base_url(); ?>Reportsales/retur_sales_view" class="text-primary">Laporan Retur Penjualan</a></li>
+              <li class="list-group-item"><a href="<?php echo base_url(); ?>Reportsales/sales_minus_view" class="text-primary">Laporan Penjualan Minus</a></li>
             </ul>
           </div>
           <!-- /.card-body -->
         </div>
         <!-- /.card -->
       </div>
-
+      <?php } ?>
 
       <div class="col-md-4">
         <div class="card card-danger">

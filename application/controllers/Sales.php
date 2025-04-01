@@ -142,6 +142,16 @@ class Sales extends CI_Controller {
 			$this->sales_model->update_stock($product_id, $new_stock);
 			$this->stock_movement_minus($product_id, $qty, $userid, $last_code, $last_stock, $new_stock);
 
+			if($new_stock < 0){
+				$data_insert_minus = array(
+					'report_minus_sales_invoice'	=> $last_code,
+					'report_minus_sales_product_id'	=> $product_id,
+					'report_minus_sales_before_qty' => $last_stock,
+					'report_minus_sales_qty'	    => $qty
+				);
+				$this->sales_model->insert_report_minus($data_insert_minus);
+			}
+
 			$last_stock_not_send  = $get_last_stock[0]->item_not_send;
 			$new_stock_not_send = $last_stock_not_send + $qty;
 			if($sendtype == 'notsend'){

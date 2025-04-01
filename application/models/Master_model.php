@@ -547,6 +547,35 @@ class master_model extends CI_Model {
     }
 
     // end product package //
+
+    // start user //
+
+    public function user_list()
+    {
+        $query = $this->db->query("select * from user_login where user_name not like 'user_name' and is_active = 'Y'");
+        $result = $query->result();
+        return $result;
+    }
+
+    public function save_user($insert)
+    {
+         $this->db->insert('user_login', $insert);
+    }
+
+    public function update_user($update, $user_id)
+    {
+        $this->db->set($update);
+        $this->db->where('user_id ', $user_id);
+        $this->db->update('user_login');
+    }
+
+    public function delete_user($user_id)
+    {
+        $this->db->set('is_active', 'N');
+        $this->db->where('user_id ', $user_id);
+        $this->db->update('user_login');
+    }
+    // end user //
 }
 
 ?>  
